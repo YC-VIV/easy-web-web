@@ -8,12 +8,12 @@ const IP = 'localhost'
 const PORT = 3001
 
 // 创建axios实例
-const http = axios.create({
-    baseURL: `http://${IP}:${PORT}/admin/api`
+const $http = axios.create({
+    baseURL: `http://${IP}:${PORT}/web/api`
 })
 
 // 处理后台发送的message信息显示到前端
-http.interceptors.response.use(
+$http.interceptors.response.use(
     res => {
         if( res.status === 200 && res.data.message ) {
             Vue.prototype.$message({
@@ -33,4 +33,4 @@ http.interceptors.response.use(
 )
 
 // 暴露模块
-export default http
+export default $http

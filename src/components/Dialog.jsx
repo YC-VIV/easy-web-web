@@ -10,10 +10,6 @@ const DialogComponent = defineComponent({
             option:props.option, // 用户给组件的属性
             isShow:false
         })
-        var data = reactive([{
-            label: '模板1',
-            value: '模板1'
-        }])
         ctx.expose({ // 让外界可以调用组件的方法
             showDialog(option){
                 state.option = option;
@@ -27,7 +23,7 @@ const DialogComponent = defineComponent({
             state.isShow = false;
             state.option.onConfirm && state.option.onConfirm(state.option.content)
         }
-        return (data)=>{
+        return ()=>{
             return <ElDialog v-model={state.isShow} title={state.option.title}>
                 {{
                     default:() => (
@@ -48,7 +44,7 @@ const DialogComponent = defineComponent({
     }   
 })
 let vm;
-export function $dialog(option){
+export function $dialog(option){                                            
     // element-plus中是有el-dialog组件 
     // 手动挂载组件   new SubComponent.$mount()
     if(!vm){

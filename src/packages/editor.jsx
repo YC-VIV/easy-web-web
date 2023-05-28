@@ -8,6 +8,7 @@ import { useFocus } from "./useFocus";
 import { useBlockDragger } from "./useBlockDragger";
 import { useCommand } from "./useCommand";
 import { $dialog } from "../components/Dialog";
+import { $modelDialog } from "../components/ModelDialog";
 import { $dropdown, DropdownItem } from "../components/Dropdown";
 import EditorOperator from "./editor-operator";
 import 'font-awesome/css/font-awesome.css'
@@ -53,15 +54,16 @@ export default defineComponent({
         const { commands } = useCommand(data, focusData); // []
         const buttons = [
             { label: '模板', icon: 'fa fa-television fa-lg', handler: () => {
-                    $dialog({
+                    $modelDialog({
                         title: '模板选择',
-                        content: JSON.stringify(data.value),
+                        content: '111',
                         footer: true,
-                        select: true,
-                        onConfirm(text) {
-                            console.log(data.value);
-                            data.value = JSON.parse(text); // 这样去更改无法保留历史记录
-                            console.log(data.value);
+                        onConfirm(width,height) {
+                            console.log(width,height);
+                            data.value.container.width = width;
+                            data.value.container.height = height;
+                            // data.value = JSON.parse(text); // 这样去更改无法保留历史记录
+                            console.log(data.value.container);
                             // console.log(JSON.parse(text))
                             // commands.updateContainer(JSON.parse(text));
                         }

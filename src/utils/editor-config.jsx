@@ -2,10 +2,16 @@
 // key对应的组件映射关系 
 import { ElButton, ElInput, ElOption, ElSelect } from 'element-plus'
 import Range from '../components/Range'
+import axios from 'axios'
+
+function getComponents() {
+    console.log(axios)
+}
 
 function createEditorConfig() {
     const componentList = [];
     const componentMap = {} 
+    getComponents();
 
     return {
         componentList,

@@ -2,7 +2,6 @@
 import axios from 'axios'
 
 import Vue from 'vue'
-import router from './router/index'
 
 // 这里设置后端接口的IP和端口号
 const IP = 'localhost'
@@ -29,9 +28,7 @@ http.interceptors.response.use(
                 type: 'error',
                 message: err.response.data.message
             })
-
         }
-        
     }
 )
 

@@ -15,7 +15,8 @@
     "mitt": "^3.0.0",
     "vue": "^3.2.4",
     "vue-loader": "^13.3.0",
-    "vue-template-compiler": "^2.5.2"
+    "vue-template-compiler": "^2.5.2",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

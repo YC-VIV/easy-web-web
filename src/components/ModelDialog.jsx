@@ -1,5 +1,6 @@
 import { ElDialog ,ElButton,ElInput, ElSelect, ElOption} from "element-plus";
 import { createVNode, defineComponent, reactive, ref, render } from "vue";
+import $http from '../http'
 
 const ModelDialog = defineComponent({
     props:{
@@ -10,7 +11,7 @@ const ModelDialog = defineComponent({
             option:props.option, // 用户给组件的属性
             isShow:false
         })
-        var modelMap = [{
+        var modelMap = reactive([{
             name: '模板1',
             width: '1000',
             height: '2000'
@@ -18,7 +19,7 @@ const ModelDialog = defineComponent({
             name: '模板2',
             width: '2000',
             height: '2000'
-        }]
+        }])
         var options = reactive([{
             name: '模板1',
             value: '模板1'
@@ -26,9 +27,24 @@ const ModelDialog = defineComponent({
             name: '模板2',
             value: '模板2'
         }])
+        async function getModels() {
+            console.log($http)
+            let res = await $http.get(`/rest/templates`);
+            console.log(res.data)
+            modelMap = res.data;
+            options = [];
+            modelMap.map((item)=>{
+                options.push({'name':item.name,'value':item.name})
+            })
+            console.log(modelMap)
+            console.log(options)
+        }
+        
+        getModels()
         var models = reactive({
             value: ''
         })
+        var describe = ref('')
         ctx.expose({ // 让外界可以调用组件的方法
             showDialog(option){
                 state.option = option;
@@ -52,17 +68,24 @@ const ModelDialog = defineComponent({
             }
             state.option.onConfirm && state.option.onConfirm(width,height)
         }
+        const onChange = (e)=>{
+            modelMap.map((item)=>{
+                if( item.name === e ) {
+                    describe = item.describe
+                }
+            })
+        }
         return (data)=>{
             return <ElDialog v-model={state.isShow} title={state.option.title}>
                 {{
-                    default:()=><ElSelect v-model={models.value}>
+                    default:()=><div>模板：<ElSelect onChange={onChange} v-model={models.value}>
                         {options.map((item)=>{
                             return <ElOption label={item.name} value={item.value}></ElOption>
                         })}
-                    </ElSelect>,
+                    </ElSelect><br></br>描述：<ElInput type="textarea" placeholder="请选择模板" rows="10" v-model={describe} disabled="true"></ElInput></div>,
                     footer:()=>state.option.footer&& <div>
                         <ElButton onClick={onCancel}>取消</ElButton>
-                        <ElButton type="primary"  onClick={onConfirm}>确定</ElButton>
+                        <ElButton type="primary" onClick={onConfirm}>确定</ElButton>
                     </div>
                 }}
             </ElDialog>

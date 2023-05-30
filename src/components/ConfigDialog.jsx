@@ -1,5 +1,6 @@
 import { ElDialog ,ElButton,ElInput, ElSelect, ElOption} from "element-plus";
 import { createVNode, defineComponent, reactive, ref, render } from "vue";
+import $http from '../http'
 
 const ConfigDialog = defineComponent({
     props:{
@@ -12,23 +13,36 @@ const ConfigDialog = defineComponent({
         })
         var modelMap = [{
             name: '模板1',
-            width: '1000',
-            height: '2000'
+            json: ''
         },{
             name: '模板2',
-            width: '2000',
-            height: '2000'
+            json: ''
         }]
         var options = reactive([{
-            name: '模板1',
-            value: '模板1'
+            name: '配置1',
+            value: '{"container":{"width":1000,"height":1000},"blocks":[{"top":209.5,"left":357,"zIndex":1,"key":"text","alignCenter":false,"props":{},"model":{},"width":64,"height":21,"focus":false},{"top":198.5,"left":445,"zIndex":1,"key":"select","alignCenter":false,"props":{},"model":{},"width":214,"height":32,"focus":true}]}'
         },{
-            name: '模板2',
-            value: '模板2'
+            name: '配置2',
+            value: '{"container":{"width":1000,"height":1000},"blocks":[{"top":209.5,"left":357,"zIndex":1,"key":"text","alignCenter":false,"props":{},"model":{},"width":64,"height":21,"focus":false},{"top":198.5,"left":445,"zIndex":1,"key":"select","alignCenter":false,"props":{},"model":{},"width":214,"height":32,"focus":false},{"top":283.5,"left":412,"zIndex":1,"key":"text","alignCenter":false,"props":{},"model":{},"width":64,"height":21,"focus":false}]}'
         }])
+        async function getConfigurations() {
+            console.log($http)
+            let res = await $http.get(`/rest/configurations`);
+            console.log(res.data)
+            modelMap = res.data;
+            options = [];
+            modelMap.map((item)=>{
+                options.push({'name':item.name,'value':item.json})
+            })
+            console.log(modelMap)
+            console.log(options)
+        }
+        
+        getConfigurations()
         var models = reactive({
             value: ''
         })
+        var describe = ref('')
         ctx.expose({ // 让外界可以调用组件的方法
             showDialog(option){
                 state.option = option;
@@ -40,26 +54,23 @@ const ConfigDialog = defineComponent({
         }
         const onConfirm = ()=>{
             state.isShow = false;
-            let name = models.value;
-            console.log(name)
-            let width = '';
-            let height = '';
-            for( let item of modelMap ) {
-                if( name === item.name ) {
-                    width = item['width'];
-                    height = item['height'];
+            state.option.onConfirm && state.option.onConfirm(models.value)
+        }
+        const onChange = (e)=>{
+            modelMap.map((item)=>{
+                if( item.json === e ) {
+                    describe = item.describe
                 }
-            }
-            state.option.onConfirm && state.option.onConfirm(width,height)
+            })
         }
         return (data)=>{
             return <ElDialog v-model={state.isShow} title={state.option.title}>
                 {{
-                    default:()=><ElSelect v-model={models.value}>
+                    default:()=><div>模板：<ElSelect onChange={onChange} v-model={models.value}>
                         {options.map((item)=>{
                             return <ElOption label={item.name} value={item.value}></ElOption>
                         })}
-                    </ElSelect>,
+                    </ElSelect><br></br>描述：<ElInput type="textarea" placeholder="请选择配置" rows="10" v-model={describe} disabled="true"></ElInput></div>,
                     footer:()=>state.option.footer&& <div>
                         <ElButton onClick={onCancel}>取消</ElButton>
                         <ElButton type="primary"  onClick={onConfirm}>确定</ElButton>

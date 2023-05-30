@@ -9,6 +9,7 @@ import { useBlockDragger } from "./useBlockDragger";
 import { useCommand } from "./useCommand";
 import { $dialog } from "../components/Dialog";
 import { $modelDialog } from "../components/ModelDialog";
+import { $configDialog } from "../components/ConfigDialog";
 import { $dropdown, DropdownItem } from "../components/Dropdown";
 import EditorOperator from "./editor-operator";
 import 'font-awesome/css/font-awesome.css'
@@ -37,7 +38,8 @@ export default defineComponent({
             height: data.value.container.height + 'px'
         }))
 
-        const config = inject('config');
+        let config = inject('config');
+        console.log(config)
 
         const containerRef = ref(null);
         // 1.实现菜单的拖拽功能
@@ -71,7 +73,7 @@ export default defineComponent({
                 } 
             },
             { label: '配置', icon: 'fa fa-briefcase fa-lg', handler: () => {
-                $dialog({
+                $configDialog({
                         title: '配置选择',
                         content: JSON.stringify(data.value),
                         footer: true,

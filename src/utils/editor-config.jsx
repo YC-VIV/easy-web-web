@@ -2,6 +2,7 @@
 // key对应的组件映射关系 
 import { ElButton, ElInput, ElOption, ElSelect } from 'element-plus'
 import Range from '../components/Range'
+import { useStore } from 'vuex';
 import $http from '../http'
 
 // const label = '';
@@ -12,7 +13,7 @@ import $http from '../http'
 function createEditorConfig() {
     const componentList = [];
     const componentMap = {} 
-    getComponents();
+    // getComponents();
 
     return {
         componentList,
@@ -22,7 +23,6 @@ function createEditorConfig() {
             componentList.push(component);
             componentMap[component.key] = component;
             console.log(componentList)
-            // Vue.forceUpdate();
         }
     }
 }
@@ -33,29 +33,36 @@ const createColorProp = (label) => ({ type: 'color', label });
 const createSelectProp = (label, options) => ({ type: 'select', label, options })
 const createTableProp = (label, table) => ({ type: 'table', label, table })
 
+const store = useStore();
+console.log(store)
+/* let component = store.state.components;
+registerConfig.register({
+    label: component.label,
+    preview: component.review,
+    render: component.render,
+    key: component.key
+}) */
+
 async function getComponents() {
     console.log($http)
     let res = await $http.get(`/rest/components`);
-    let str = res.data[0];
-    console.log(str)
-    // console.log(str.replace(/[ ]|[\r\n]/g,""))
-    let render = eval(str['render'])
-    console.log(render)
-    let preview = eval(str['preview'])
-    console.log(preview)
-    let label = str['name']
-    console.log(label)
-    let key = str['key']
-    console.log(key)
-
-    registerConfig.register({
-        label,
-        key,
-        render,
-        preview
+    res.data.map((item) => {
+        let render = eval(item['render'])
+        let preview = eval(item['preview'])
+        let label = item['name']
+        let key = item['key']
+    
+        registerConfig.register({
+            label,
+            key,
+            render,
+            preview
+        })
     })
 
 }
+
+getComponents()
 
 registerConfig.register({
     label: '下拉框',

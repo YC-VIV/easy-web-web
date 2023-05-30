@@ -1642,6 +1642,11 @@
   optionalDependencies:
     "prettier" "^1.18.2"
 
+"@vue/devtools-api@^6.0.0-beta.11":
+  "integrity" "sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q=="
+  "resolved" "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.5.0.tgz"
+  "version" "6.5.0"
+
 "@vue/preload-webpack-plugin@^1.1.0":
   "integrity" "sha1-zrkktOyzucQ4ccekKaAvhCPmIas="
   "resolved" "https://registry.nlark.com/@vue/preload-webpack-plugin/download/@vue/preload-webpack-plugin-1.1.2.tgz"
@@ -8417,6 +8422,13 @@
     "@vue/compiler-dom" "3.2.4"
     "@vue/runtime-dom" "3.2.4"
     "@vue/shared" "3.2.4"
+
+"vuex@^4.1.0":
+  "integrity" "sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ=="
+  "resolved" "https://registry.npmjs.org/vuex/-/vuex-4.1.0.tgz"
+  "version" "4.1.0"
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.11"
 
 "watchpack-chokidar2@^2.0.1":
   "integrity" "sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww=="

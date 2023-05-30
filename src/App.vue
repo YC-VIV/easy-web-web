@@ -5,42 +5,64 @@
 </template>
 
 <script>
-import { ref ,provide} from 'vue';
-import data from './data.json';
-import Editor from './packages/editor';
-import {registerConfig as config} from './utils/editor-config';
-import Range from './components/Range.jsx'
-export default {
-  components:{
-    Editor,
-    Range
-  },
-  setup(){
-    const state = ref(data);
-    provide('config',config); // 将组件的配置直接传值
+  import {
+    ref,
+    provide,
+    computed
+  } from 'vue';
+  import data from './data.json';
+  import Editor from './packages/editor';
+  import {
+    registerConfig
+  } from './utils/editor-config';
+  /* import {
+    useStore
+  } from 'vuex'; */
+  import Range from './components/Range.jsx'
+  export default {
+    components: {
+      Editor,
+      Range
+    },
+    setup() {
+      /* function getData() {
+        let {
+          dispatch
+        } = useStore();
+        dispatch('getComponents')
+      }
+      getData();
+      const store = useStore();
+      console.log(store.state.component) */
 
-    const formData = ref({
-      username:'zfjg',
-      password:123,
-      start:0,
-      end:100
-    })
+      const state = ref(data);
+      // console.log(registerConfig)
+      // const config = ref(registerConfig);
+      const config = registerConfig
+      // console.log(config.value)
+      provide('config', config); // 将组件的配置直接传值
 
-    return {
-      state,
-      formData
-    }
+      const formData = ref({
+        username: 'zfjg',
+        password: 123,
+        start: 0,
+        end: 100
+      })
+
+      return {
+        state,
+        formData,
+      }
+    },
   }
-}
-
 </script>
 
 <style lang="scss">
-.app{
-  position:fixed;
-  top:20px;
-  left:20px;
-  right:20px;
-  bottom:20px;
-}
+  .app {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
 </style>

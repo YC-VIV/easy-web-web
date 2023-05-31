@@ -65,6 +65,21 @@ async function getComponents() {
 getComponents()
 
 registerConfig.register({
+    label: '盒子',
+    preview: () => '基础盒子',
+    render: ({ props }) => <div style={{ width:props.width, height:props.height, color: props.color, fontSize: props.size,backgroundColor: props.bgcolor, }}>{props.text || '渲染盒子'}</div>,
+    key: 'box',
+    props: {
+        width: createInputProp('宽度'),
+        height: createInputProp('高度'),
+        size: createInputProp('字体大小'),
+        text: createInputProp('文本'),
+        color: createColorProp('字体颜色'),
+        bgcolor: createColorProp('背景颜色'),
+    }
+})
+
+registerConfig.register({
     label: '下拉框',
     preview: () => <ElSelect modelValue=""></ElSelect>,
     render: ({ props, model }) => {
@@ -84,7 +99,7 @@ registerConfig.register({
             key: 'label' // 显示给用户的值 是label值
         })
     },
-    model: { // {default:'username'}
+    model: {
         default: '绑定字段'
     }
 })
@@ -102,6 +117,46 @@ registerConfig.register({
             { label: '20px', value: '20px' },
             { label: '24px', value: '24px' },
         ])
+    }
+})
+
+registerConfig.register({
+    label: '页头',
+    preview: () => <div>页头</div>,
+    render: ({ props }) => <el-page-header icon={props.icon}>
+        <template>
+          <span class="text-large font-600 mr-3"> {props.title||'标题'} </span>
+        </template>
+    </el-page-header>,
+    key: 'header',
+    props: {
+        title: createInputProp('标题'),
+        icon: createSelectProp('图标', [
+            { label: '图标1', value: 'ArrowLeft' },
+        ])
+    }
+})
+
+registerConfig.register({
+    label: '消息提示',
+    preview: () => <div>消息提示</div>,
+    render: ({ props }) => <el-alert title="success alert" type="success" effect="dark" />,
+    key: 'header',
+    props: {
+        title: createInputProp('标题'),
+        icon: createSelectProp('图标', [
+            { label: '图标1', value: 'ArrowLeft' },
+        ])
+    }
+})
+
+registerConfig.register({
+    label: '头像',
+    preview: () => <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />,
+    render: ({ props }) => <el-avatar src={props.src} />,
+    key: 'avatar',
+    props: {
+        src: createInputProp('头像链接'),
     }
 })
 
@@ -137,17 +192,6 @@ registerConfig.register({
 }) */
 
 registerConfig.register({
-    label: '日历',
-    preview: () => <text>日历</text>,
-    render: ({props}) => <div style={{ width: props.width, height: props.height }}><el-calendar></el-calendar></div>,
-    key: 'calendar',
-    props: {
-        width: createInputProp('宽'),
-        height: createInputProp('高'),
-    }
-})
-
-registerConfig.register({
     label: '按钮',
     resize: {
         width: true,
@@ -173,6 +217,7 @@ registerConfig.register({
         ])
     }
 })
+
 registerConfig.register({
     label: '输入框',
     resize: {
@@ -185,6 +230,48 @@ registerConfig.register({
         default: '绑定字段'
     }
 });
+
+registerConfig.register({
+    label: '日历',
+    preview: () => <text>日历</text>,
+    render: ({props}) => <div style={{ width: props.width, height: props.height }}><el-calendar></el-calendar></div>,
+    key: 'calendar',
+    props: {
+        width: createInputProp('宽'),
+        height: createInputProp('高'),
+    }
+})
+
+registerConfig.register({
+    label: '滑块',
+    preview: () => <el-slider disabled/>,
+    render: ({ props,model }) => <div style={{ width:props.width}}><el-slider v-model={model}/></div>,
+    key: 'slider',
+    props: {
+        width: createInputProp('宽度'),
+    },
+    model: {
+        default: '绑定字段'
+    }
+})
+
+registerConfig.register({
+    label: '开关',
+    preview: () => <el-switch disabled/>,
+    render: ({ props,model }) => <div><el-switch size={props.size} v-model={model}/></div>,
+    key: 'testbox',
+    props: {
+        size: createSelectProp('尺寸大小', [
+            { label: '大', value: 'large' },
+            { label: '默认', value: 'default' },
+            { label: '小', value: 'small' },
+        ])
+    },
+    model: {
+        default: '绑定字段'
+    }
+})
+
 registerConfig.register({
     label: '范围选择器',
     preview: () => <Range placeholder="预览输入框"></Range>,
@@ -204,50 +291,42 @@ registerConfig.register({
 });
 
 registerConfig.register({
-    label: '文本',
-    preview: () => '预览文本',
-    render: ({ props }) => <span style={{ color: props.color, fontSize: props.size }}>{props.text || '渲染文本'}</span>,
-    key: 'text',
-    props: {
-        text: createInputProp('文本内容'),
-        color: createColorProp('字体颜色'),
-        size: createSelectProp('字体大小', [
-            { label: '14px', value: '14px' },
-            { label: '20px', value: '20px' },
-            { label: '24px', value: '24px' },
-        ])
+    label: '取色器',
+    preview: () => <el-color-picker/>,
+    render: ({model}) => <el-color-picker {...model.default} />,
+    key: 'colorpicker',
+    model: {
+        default: '绑定字段'
     }
 })
 
 registerConfig.register({
-    label: '文本',
-    preview: () => '预览文本',
-    render: ({ props }) => <span style={{ color: props.color, fontSize: props.size }}>{props.text || '渲染文本'}</span>,
-    key: 'text',
-    props: {
-        text: createInputProp('文本内容'),
-        color: createColorProp('字体颜色'),
-        size: createSelectProp('字体大小', [
-            { label: '14px', value: '14px' },
-            { label: '20px', value: '20px' },
-            { label: '24px', value: '24px' },
-        ])
+    label: '评分器',
+    preview: () => <el-rate/>,
+    render: ({model}) => <el-rate {...model.default}/>,
+    key: 'rate',
+    model: {
+        default: '绑定字段'
     }
 })
 
 registerConfig.register({
-    label: '文本',
-    preview: () => '预览文本',
-    render: ({ props }) => <span style={{ color: props.color, fontSize: props.size }}>{props.text || '渲染文本'}</span>,
-    key: 'text',
+    label: '折叠面板',
+    preview: () => <div>折叠面板</div>,
+    render: ({props,model}) => 
+    <el-collapse v-model={model}>
+        <el-collapse-item title="Consistency">
+          <div>
+            {props.content}
+          </div>
+        </el-collapse-item>
+    </el-collapse>,
+    key: 'collapse',
+    model: {
+        default: '绑定字段'
+    },
     props: {
-        text: createInputProp('文本内容'),
-        color: createColorProp('字体颜色'),
-        size: createSelectProp('字体大小', [
-            { label: '14px', value: '14px' },
-            { label: '20px', value: '20px' },
-            { label: '24px', value: '24px' },
-        ])
+        content: createInputProp('内容'),
     }
 })
 

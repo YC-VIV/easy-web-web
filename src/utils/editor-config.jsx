@@ -121,6 +121,20 @@ registerConfig.register({
 })
 
 registerConfig.register({
+    label: '播放器',
+    preview: () => '播放器',
+    render: ({ props }) => <div><video style={{ width:props.width, height:props.height }} src={props.src}  controls="controls">您的浏览器不支持 video 标签。
+    </video></div>
+    ,
+    key: 'videoplayer',
+    props: {
+        src: createInputProp('视频链接'),
+        width: createInputProp('宽度'),
+        height: createInputProp('高度'),
+    }
+})
+
+registerConfig.register({
     label: '页头',
     preview: () => <div>页头</div>,
     render: ({ props }) => <el-page-header icon={props.icon}>
@@ -141,7 +155,7 @@ registerConfig.register({
     label: '消息提示',
     preview: () => <div>消息提示</div>,
     render: ({ props }) => <el-alert title="success alert" type="success" effect="dark" />,
-    key: 'header',
+    key: 'tip',
     props: {
         title: createInputProp('标题'),
         icon: createSelectProp('图标', [
@@ -289,6 +303,21 @@ registerConfig.register({
     },
     key: 'range',
 });
+
+registerConfig.register({
+    label: '计数器',
+    preview: () => <el-input-number min='1' max='10' label='计数器'></el-input-number>,
+    render: ({ props,model }) => <el-input-number v-model={model} min={props.min} max={props.max} label={props.label}></el-input-number>,
+    key: 'numberbox',
+    props: {
+        min: createInputProp('最小值'),
+        max: createInputProp('最大值'),
+        label: createInputProp('描述文字'),
+    },
+    model: {
+        default: '绑定字段'
+    }
+})
 
 registerConfig.register({
     label: '取色器',
